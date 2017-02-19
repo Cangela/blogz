@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<!-- TODO 2 - Add links to login and logout handlers -->
 <html>
     <head>
         <title>Blogz</title>
@@ -12,8 +12,13 @@
                 <li><a href="/">home</a></li>
                 <li><a href="/blog">all posts</a></li>
                 <li><a href="/blog/newpost">new post</a></li>
+                &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;
+                <li id=user-account><a href="/login">login</a></li>
+                <li id=user-account><a href="/logout">logout</a><li>
+                </nav>
             </ul>
         </nav>
+
         {% block content %}
         {% endblock %}
     </body>

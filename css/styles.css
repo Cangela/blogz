@@ -67,6 +67,6 @@ nav ul li {
     margin-right: 15px;
 }
 
-nav #user-account {
-    float: right;
+nav ul li #user-account {
+    text-align: right;
 }

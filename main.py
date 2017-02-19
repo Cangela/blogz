@@ -20,8 +20,13 @@ class BlogHandler(webapp2.RequestHandler):
             The user parameter will be a User object.
         """
 
-        # TODO - filter the query so that only posts by the given user
-        return None
+        # TODO 4 - filter the query so that only posts by the given user
+
+        #query = Movie.all().filter("owner", self.user).filter("watched", True)
+        #watched_movies = query.run() Only need user not self.user
+
+        query = Post.all().filter("author", user).order('-created')
+        return query.fetch(limit=limit, offset=offset)
 
     def get_user_by_name(self, username):
         """ Get a user object from the db, based on their username """
@@ -74,13 +79,15 @@ class BlogIndexHandler(BlogHandler):
     # number of blog posts per page to display
     page_size = 5
 
-    def get(self, username=""):
-        """ """
+    def get(self, posts="", username=""):
+        """ Getting the page numbers right """
 
         # If request is for a specific page, set page number and offset accordingly
         page = self.request.get("page")
         offset = 0
+
         page = page and int(page)
+
         if page:
             offset = (int(page) - 1) * self.page_size
         else:
@@ -90,19 +97,23 @@ class BlogIndexHandler(BlogHandler):
         if username:
             user = self.get_user_by_name(username)
             posts = self.get_posts_by_user(user, self.page_size, offset)
+            postz = self.get_posts_by_user(user, self.page_size, offset + 5)
         else:
             posts = self.get_posts(self.page_size, offset)
-
+            postz = self.get_posts(self.page_size, offset + 5)
         # determine next/prev page numbers for navigation links
         if page > 1:
             prev_page = page - 1
         else:
             prev_page = None
 
-        if len(posts) == self.page_size and Post.all().count() > offset+self.page_size:
-            next_page = page + 1
-        else:
+        #if len(posts) == self.page_size and Post.all().count() > offset+self.page_size:
+        #I don't understand the statement above so I did it my way.
+        
+        if len(postz) == 0:
             next_page = None
+        else:
+            next_page = page + 1
 
         # render the page
         t = jinja_env.get_template("blog.html")
@@ -114,6 +125,8 @@ class BlogIndexHandler(BlogHandler):
                     next_page=next_page,
                     username=username)
         self.response.out.write(response)
+
+
 
 class NewPostHandler(BlogHandler):
 
@@ -128,20 +141,21 @@ class NewPostHandler(BlogHandler):
 
     def post(self):
         """ Create a new blog post if possible. Otherwise, return with an error message """
+        #username = self.request.get("username")
         title = self.request.get("title")
         body = self.request.get("body")
 
         if title and body:
 
             # create a new Post object and store it in the database
-            post = Post(
-                title=title,
-                body=body,
-                author=self.user)
+            post = Post(title=title,
+                        body=body,
+                        author=self.user)
             post.put()
 
             # get the id of the new post, so we can render the post's page (via the permalink)
             id = post.key().id()
+            #self.out.write(id)
             self.redirect("/blog/%s" % id)
         else:
             error = "we need both a title and a body!"
@@ -195,7 +209,7 @@ class SignupHandler(BlogHandler):
 
     def get(self):
         t = jinja_env.get_template("signup.html")
-        response = t.render(errors={})
+        response = t.render(username=self.user, errors={})
         self.response.out.write(response)
 
     def post(self):
@@ -258,12 +272,12 @@ class SignupHandler(BlogHandler):
 
 class LoginHandler(BlogHandler):
 
-    # TODO - The login code here is mostly set up for you, but there isn't a template to log in
+    # TODO 3 - The login code here is mostly set up for you, but there isn't a template to log in
 
-    def render_login_form(self, error=""):
+    def render_login_form(self, username="", error=""):
         """ Render the login form with or without an error, based on parameters """
         t = jinja_env.get_template("login.html")
-        response = t.render(error=error)
+        response = t.render(username=username, error=error)
         self.response.out.write(response)
 
     def get(self):
@@ -288,6 +302,7 @@ class LogoutHandler(BlogHandler):
 
     def get(self):
         self.logout_user()
+        #self.set_secure_cookie('user', '')
         self.redirect('/blog')
 
 app = webapp2.WSGIApplication([
