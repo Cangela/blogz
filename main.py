@@ -1,4 +1,3 @@
-"""Bloggy"""
 import webapp2, jinja2, os, re
 from google.appengine.ext import db
 from models import Post, User
@@ -273,7 +272,6 @@ class LoginHandler(BlogHandler):
 
     def render_login_form(self, username="", error=""):
         """ Render the login form with or without an error, based on parameters """
-
         self.render("login.html", username=username, error=error)
 
     def get(self):
