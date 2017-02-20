@@ -2,6 +2,7 @@ body {
     font-family: sans-serif;
     width: 800px;
     margin: 0 auto;
+    color: orange;
     padding: 10px;
 }
 
@@ -38,21 +39,25 @@ hr {
 }
 
 .post + .post {
+    color: orange;
     margin-top: 20px;
 }
 
 .post-title {
     font-weight: bold;
+    color: violet;
     font-size: 20px;
 }
 
 .post-body {
     margin: 0;
+    color: orange;
     font-size: 17px;
 }
 
 .post-author {
     font-style: italic;
+    color: green;
     font-size: 12px;
 }
 
@@ -64,9 +69,10 @@ nav ul {
 nav ul li {
     list-style: none;
     display: inline-block;
-    margin-right: 15px;
+    margin-right: 30px;
 }
 
-nav ul li #user-account {
-    text-align: right;
+ #user-account {
+    margin-right: 45px;
+    color: orange;
 }

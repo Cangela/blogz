@@ -109,7 +109,7 @@ class BlogIndexHandler(BlogHandler):
 
         #if len(posts) == self.page_size and Post.all().count() > offset+self.page_size:
         #I don't understand the statement above so I did it my way.
-        
+
         if len(postz) == 0:
             next_page = None
         else:
