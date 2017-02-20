@@ -93,7 +93,7 @@ class BlogIndexHandler(BlogHandler):
         else:
             page = 1
 
-        # Fetch posts for all users, or a specific user, depending on request parameters
+        # Fetch posts for all users, or a specific user, depending on request par1ameters
         if username:
             user = self.get_user_by_name(username)
             posts = self.get_posts_by_user(user, self.page_size, offset)
@@ -126,8 +126,6 @@ class BlogIndexHandler(BlogHandler):
                     username=username)
         self.response.out.write(response)
 
-
-
 class NewPostHandler(BlogHandler):
 
     def render_form(self, title="", body="", error=""):
@@ -141,7 +139,7 @@ class NewPostHandler(BlogHandler):
 
     def post(self):
         """ Create a new blog post if possible. Otherwise, return with an error message """
-        #username = self.request.get("username")
+
         title = self.request.get("title")
         body = self.request.get("body")
 
@@ -155,8 +153,8 @@ class NewPostHandler(BlogHandler):
 
             # get the id of the new post, so we can render the post's page (via the permalink)
             id = post.key().id()
-            #self.out.write(id)
             self.redirect("/blog/%s" % id)
+
         else:
             error = "we need both a title and a body!"
             self.render_form(title, body, error)
@@ -218,7 +216,7 @@ class SignupHandler(BlogHandler):
             If data doesn't validate, render the form again with an error.
 
             This code is essentially identical to the solution to the Signup portion
-            of the Formation assignment. The main modification is that we are now
+            of the Signup assignment. The main modification is that we are now
             able to create a new user object and store it when we have valid data.
         """
 
@@ -272,7 +270,7 @@ class SignupHandler(BlogHandler):
 
 class LoginHandler(BlogHandler):
 
-    # TODO 3 - The login code here is mostly set up for you, but there isn't a template to log in
+    # TODO 1 - The login code here is mostly set up for you, but there isn't a template to log in
 
     def render_login_form(self, username="", error=""):
         """ Render the login form with or without an error, based on parameters """
