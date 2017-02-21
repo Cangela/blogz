@@ -69,10 +69,13 @@ nav ul {
 nav ul li {
     list-style: none;
     display: inline-block;
-    margin-right: 30px;
+    margin-right: 0px;
 }
 
- #user-account {
-    margin-right: 45px;
-    color: orange;
+li a {
+    margin-right:  20px;
+}
+
+#user-account {
+    margin-right: 10px;
 }
